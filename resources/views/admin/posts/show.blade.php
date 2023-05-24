@@ -3,6 +3,7 @@
 @section('content')
 <div class="container text-center mt-4">
     <h1>{{$post->title}}</h1>
+    <span>Categoria: {{$post->type->name ?? 'nessuna'}}</span>
     <hr>
 </div>
 <p>{{$post->content}}</p>
@@ -18,7 +19,7 @@
   
   <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminare il post?</h1>
