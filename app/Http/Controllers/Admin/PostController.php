@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -28,7 +29,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin/posts/create');
+        $types = Type::all();
+
+        return view('admin/posts/create', compact('types'));
     }
 
     /**
@@ -51,7 +54,7 @@ class PostController extends Controller
 
         $newPost->save();
 
-        return redirect()->route('admin.posts.index', $newPost);
+        return redirect()->route('admin.posts.show', $newPost);
     }
 
     /**
@@ -73,7 +76,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin/posts/edit', compact('post'));
+        $types = Type::all();
+
+        return view('admin/posts/edit', compact(['post', 'types']));
     }
 
     /**
@@ -113,12 +118,14 @@ class PostController extends Controller
         $validator = Validator::make($formData, [
             'title' => 'required|max:100|min:5',
             'content' => 'required|min:10',
+            'type_id' => 'nullable|exists:types,id',
         ], [
             'title.required' => 'Inserisci un titolo!',
             'title.max' => 'Il titolo deve avere massimo :max caratteri!',
             'title.min' => 'Il titolo deve avere minimo :min caratteri!',
             'content.required' => 'Inserisci il contenuto del post!',
             'content.min' => 'Il contenuto del post deve avere minimo :min caratteri!',
+            'type_id.exists' => 'La categoria non è presente'
         ])->validate();
     }
 }
